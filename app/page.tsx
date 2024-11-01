@@ -1,101 +1,98 @@
-import Image from "next/image";
+"use client";
+import { useRef, useState } from "react";
+import Spline from "@splinetool/react-spline";
+import { gsap } from 'gsap';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    let textRef = useRef<HTMLHeadingElement>(null);
+    const subRef = useRef<HTMLParagraphElement>(null);
+    const [isLoaded, setIsLoaded] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    const splitText = (text: string) => {
+        return text.split('').map((char, index) => (
+            <span key={index} className="letter" style={{ opacity: 0, display: 'inline-block', transform: 'translateY(20px)' }}>{char}</span>
+        ));
+    };
+
+    const playAnimation = () => {
+        const letters = textRef.current?.children;
+        if (!letters) return;
+
+        Array.from(letters).forEach((char, index) => {
+            gsap.to(char, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: 'power2.out',
+                onComplete: () => {
+                    if (index === letters.length - 1) {
+                        slideInSubtitle();
+                    }
+                }
+            });
+        });
+    };
+
+    const slideInSubtitle = () => {
+        gsap.set(subRef.current, { x: -100, opacity: 0 });
+        gsap.to(subRef.current, {
+            x: 0,
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power2.out',
+            onComplete: () => {
+                subRef.current?.classList.add('visible');
+            }
+        });
+    };
+
+    const handleSplineLoad = () => {
+        setTimeout(() => {
+            gsap.to(".loading-overlay", {
+                y: "-100%",
+                duration: 0.5,
+                onComplete: () => {
+                    setIsLoaded(true);
+                    gsap.to(".main-content", { opacity: 1, duration: 0.5, onComplete: playAnimation });
+                }
+            });
+        }, 1000);
+    };
+
+    return (
+        <div className="page-container">
+            <div className="loading-overlay">
+                <p>Loading...</p>
+            </div>
+            <div className="main-content" style={{ opacity: isLoaded ? 1 : 0 }}>
+                <div className="section s1">
+                    <Spline
+                        className="spline"
+                        scene="https://prod.spline.design/bdf3nPD91rXmfZAv/scene.splinecode"
+                        style={{ width: "100%", height: "100vh" }}
+                        onLoad={handleSplineLoad}
+                    />
+                    <div className="overlay"></div>
+                    <div className="text">
+                        <h1 ref={textRef} className="main-h1">
+                            {splitText("Varshith")}
+                        </h1>
+                        <p ref={subRef} className="sub-p" style={{ opacity: 0 }}>
+                            <span className="sub">
+                                Web Developer
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div className="section s2">
+                    <div className="content">
+                        <h2>Another Section</h2>
+                        <p>This is some content for another section.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }

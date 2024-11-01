@@ -1,21 +1,152 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Libre Caslon Display", serif;
+    color: white;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+    background-color: #000;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+
+
+.container {
+    overflow: hidden;
+}
+
+.section {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.s1 {
+    z-index: 3;
+}
+
+.spline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+.main-h1 {
+    font-size: 15rem;
+    z-index: 10;
+    font-weight: 100;
+    text-align: left;
+}
+
+.letter {
+    font-size: inherit;
+}
+
+.text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    max-width: 55rem;
+    pointer-events: none;
+}
+
+.sub-p {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
+    color: rgb(255, 255, 255);
+    font-size: 3rem;
+    white-space: nowrap;
+    z-index: 5;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    position: relative;
+}
+
+.sub-p::before {
+    content: "";
+    display: block;
+    background-color: white;
+    width: 20%;
+    height: 1px;
+}
+
+.sub-p::before {
+    content: "";
+    display: block;
+    background-color: white;
+    width: 20%;
+    height: 1px;
+}
+
+.sub-p.visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+
+.content {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    -webkit-backdrop-filter: blur(20rem);
+    backdrop-filter: blur(20rem);
+}
+
+.page-container {
+    position: relative;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 0, 0);
+    z-index: 1000;
+    transition: transform 0.5s ease;
+}
+
+.loading-overlay p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+@media (max-width: 768px) {
+    .main-h1 {
+        font-size: 5rem;
+    }
+
+    .sub-p {
+        font-size: 2rem;
+    }
 }
