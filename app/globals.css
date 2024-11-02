@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Libre Caslon Display", serif;
+    font-family: 'General Sans', sans-serif;
     color: white;
 }
 
@@ -52,11 +52,19 @@ body {
     pointer-events: none;
 }
 
-.main-h1 {
-    font-size: 15rem;
+.sup{
+    font-size: 2rem;
+}
+
+.main-h1, .sup {
     z-index: 10;
+}
+
+.main-h1 {
+    font-size: 13rem;
     font-weight: 100;
     text-align: left;
+    width: max-content;
 }
 
 .letter {
@@ -78,7 +86,7 @@ body {
     justify-content: flex-end;
     gap: 2rem;
     color: rgb(255, 255, 255);
-    font-size: 3rem;
+    font-size: 2rem;
     white-space: nowrap;
     z-index: 5;
     transform: translateX(-100%);
@@ -140,13 +148,22 @@ body {
     font-weight: bold;
 }
 
-
-@media (max-width: 768px) {
+@media (max-width: 1300px) {
     .main-h1 {
-        font-size: 5rem;
+        font-size: 14vw;
     }
 
     .sub-p {
         font-size: 2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-h1 {
+        font-size: 15vw;
+    }
+
+    .sub-p {
+        font-size: 1rem;
     }
 }

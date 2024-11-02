@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 export default function Home() {
     let textRef = useRef<HTMLHeadingElement>(null);
     const subRef = useRef<HTMLParagraphElement>(null);
+    const supRef = useRef<HTMLParagraphElement>(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
     const splitText = (text: string) => {
@@ -34,6 +35,20 @@ export default function Home() {
         });
     };
 
+    const playSupAnimation = () => {
+        gsap.set(supRef.current, { x: 100, opacity: 0 });
+        gsap.to(supRef.current, {
+            x: 0,
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power2.out',
+            onComplete: () => {
+                supRef.current?.classList.add('visible');
+                playAnimation();
+            }
+        });
+    };
+
     const slideInSubtitle = () => {
         gsap.set(subRef.current, { x: -100, opacity: 0 });
         gsap.to(subRef.current, {
@@ -54,10 +69,10 @@ export default function Home() {
                 duration: 0.5,
                 onComplete: () => {
                     setIsLoaded(true);
-                    gsap.to(".main-content", { opacity: 1, duration: 0.5, onComplete: playAnimation });
+                    gsap.to(".main-content", { opacity: 1, duration: 0.5, onComplete: playSupAnimation });
                 }
             });
-        }, 1000);
+        }, 0);
     };
 
     return (
@@ -75,6 +90,9 @@ export default function Home() {
                     />
                     <div className="overlay"></div>
                     <div className="text">
+                        <div ref={supRef} className="sup" style={{ opacity: 0 }}>
+                            Hey I'm
+                        </div>
                         <h1 ref={textRef} className="main-h1">
                             {splitText("Varshith")}
                         </h1>
